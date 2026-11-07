@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Error - QASESORES{% endblock %}
+{% block content %}
+<div class="card" style="text-align: center; padding: 3rem;">
+    <h2 style="color: var(--primary-dark); margin-bottom: 1rem;">Ocurrió un error inesperado</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">{{ error_message|default('La página solicitada no está disponible o ha ocurrido un fallo en el sistema.') }}</p>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Volver al Inicio</a>
+</div>
+{% endblock %}

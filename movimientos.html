@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Movimientos y Auditoría - Jefatura QASESORES{% endblock %}
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+    <h2>Panel Exclusivo de Jefatura: Movimientos y Auditoría</h2>
+    <p style="color: var(--text-muted);">Trazabilidad en tiempo real de todas las modificaciones y operaciones monetarias/departamentales</p>
+</div>
+
+<!-- KPIs de control -->
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-title">Total Movimientos</span>
+        <span class="kpi-value">{{ logs|length }}</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Trabajos Activos</span>
+        <span class="kpi-value">{{ total_works }}</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-title">Nivel de Seguridad</span>
+        <span class="kpi-value" style="font-size: 1.4rem; padding-top: 6px;">Mundial 100%</span>
+    </div>
+</div>
+
+<div class="card bg-character-blur">
+    <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">Bitácora de Cambios y Auditoría</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Log</th>
+                    <th>Fecha / Hora</th>
+                    <th>Usuario Responsable</th>
+                    <th>Acción Realizada</th>
+                    <th>Detalles del Movimiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if logs %}
+                    {% for log in logs %}
+                    <tr>
+                        <td>#{{ log.id }}</td>
+                        <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td><strong>{{ log.username }}</strong></td>
+                        <td>
+                            <span style="font-weight: 700; color: {% if log.action == 'CREACIÓN' %}var(--success-green{% elif log.action == 'EDICIÓN' %}#D69E2E{% else %}var(--danger-red){% endif %};">
+                                {{ log.action }}
+                            </span>
+                        </td>
+                        <td>{{ log.details }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted);">No hay movimientos registrados en la bitácora de auditoría.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

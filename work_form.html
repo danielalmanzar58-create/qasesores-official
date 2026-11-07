@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - QASESORES{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <div class="card">
+        <h2 style="margin-bottom: 1.5rem; color: var(--primary-dark);">{{ title }}</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="work_date">Fecha</label>
+                <input type="date" id="work_date" name="work_date" required value="{{ work.work_date if work else today_date }}">
+            </div>
+
+            <div class="form-group">
+                <label for="location_type">Tipo de Local / Departamento</label>
+                <select id="location_type" name="location_type" required>
+                    <option value="Nuevo Local" {% if work and work.location_type == 'Nuevo Local' %}selected{% endif %}>Nuevo Local</option>
+                    <option value="Viejo Local" {% if work and work.location_type == 'Viejo Local' %}selected{% endif %}>Viejo Local</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción del Trabajo Realizado</label>
+                <textarea id="description" name="description" rows="4" required placeholder="Detalle técnico y operativo...">{{ work.description if work else '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Estado del Trabajo</label>
+                <select id="status" name="status" required>
+                    <option value="Pendiente" {% if work and work.status == 'Pendiente' %}selected{% endif %}>Pendiente</option>
+                    <option value="Finalizado" {% if work and work.status == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="observations">Observación</label>
+                <textarea id="observations" name="observations" rows="3" placeholder="Observaciones de seguridad o cumplimiento (opcional)...">{{ work.observations if work else '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="worker_name">Nombre de Quien Realizó el Trabajo</label>
+                <input type="text" id="worker_name" name="worker_name" required value="{{ work.worker_name if work else current_user.username }}">
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary" style="flex: 1; min-width: 140px; padding: 0.75rem;">Guardar y Registrar Movimiento</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline" style="flex: 1; min-width: 140px; text-align: center; padding: 0.75rem;">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

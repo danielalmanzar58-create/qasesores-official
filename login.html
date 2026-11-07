@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión - QASESORES Official{% endblock %}
+{% block content %}
+<div style="max-width: 440px; margin: 3rem auto;">
+    <div class="card bg-character-blur">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+            {% if logo_exists %}
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="QASESORES Logo" style="height: 75px; width: 75px; border-radius: 14px; object-fit: cover; margin-bottom: 12px; box-shadow: 0 0 15px var(--accent-green-glow); border: 2px solid var(--accent-green);">
+            {% else %}
+            <svg viewBox="0 0 100 100" style="height: 75px; width: 75px; background: #003366; border-radius: 14px; margin-bottom: 12px;">
+                <circle cx="45" cy="50" r="30" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+                <path d="M 55 60 L 80 85" stroke="#66CC33" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 60 85 L 85 30 L 95 85" fill="none" stroke="#66CC33" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {% endif %}
+            <h2 style="color: var(--primary-dark);">Acceso Global Corporativo</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Qasesores Official & Departamental</p>
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">Usuario Autorizado</label>
+                <input type="text" id="username" name="username" required placeholder="Diosaly o Dirección">
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña de Seguridad</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.8rem; padding: 0.8rem; font-size: 1rem;">Autenticar en el Sistema</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

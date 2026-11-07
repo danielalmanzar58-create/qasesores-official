@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}QASESORES Official & Departamental{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            {% if logo_exists %}
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="QASESORES Logo" class="header-logo">
+            {% else %}
+            <svg class="header-logo" viewBox="0 0 100 100" style="background: #003366; border-radius: 10px;">
+                <circle cx="45" cy="50" r="30" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+                <path d="M 55 60 L 80 85" stroke="#66CC33" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 60 85 L 85 30 L 95 85" fill="none" stroke="#66CC33" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {% endif %}
+            <div class="brand-info">
+                <div class="brand-title">QASESORES</div>
+                <div class="brand-subtitle">Official & Departamental Enterprise</div>
+            </div>
+        </div>
+        {% if current_user.is_authenticated %}
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('archivos') }}">Archivos</a></li>
+                <li><a href="{{ url_for('work_form') }}">Nuevo Trabajo</a></li>
+                {% if current_user.role == 'jefe' %}
+                <li><a href="{{ url_for('movimientos') }}" style="color: var(--neon-cyan); font-weight: 700;">⚡ Movimientos & Auditoría</a></li>
+                {% endif %}
+                {% if current_user.is_admin or current_user.role == 'jefe' %}
+                <li><a href="{{ url_for('users') }}">Usuarios</a></li>
+                {% endif %}
+                <li><span class="badge-role">{{ current_user.role|upper }}</span></li>
+                <li><a href="{{ url_for('logout') }}" class="btn btn-outline" style="padding: 0.25rem 0.7rem; font-size: 0.85rem;">Salir</a></li>
+            </ul>
+        </nav>
+        {% endif %}
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2026 QASESORES Official. Sistema Global de Seguridad Monetaria y Control Departamental.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Archivos y Base de Datos - QASESORES{% endblock %}
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+    <div>
+        <h2>Base de Datos de Archivos y Registros</h2>
+        <p style="color: var(--text-muted);">Repositorio general de operaciones departamentales</p>
+    </div>
+    <div>
+        <a href="{{ url_for('export_excel') }}" class="btn btn-excel" style="width: 100%;">📊 Exportar Base de Datos a Excel (.xlsx)</a>
+    </div>
+</div>
+
+<div class="card bg-character-blur">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+        <h3 style="color: var(--primary-dark);">Registros Almacenados</h3>
+        <span style="background: var(--primary-dark); color: white; padding: 4px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;">Total: {{ works|length }} registros</span>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Local</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th>Observación</th>
+                    <th>Realizado Por</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if works %}
+                    {% for work in works %}
+                    <tr>
+                        <td>#{{ work.id }}</td>
+                        <td>{{ work.work_date }}</td>
+                        <td><strong>{{ work.location_type }}</strong></td>
+                        <td>{{ work.description }}</td>
+                        <td>
+                            <span style="font-weight: 600; color: {% if work.status == 'Finalizado' %}var(--success-green){% else %}var(--danger-red){% endif %};">
+                                {{ work.status }}
+                            </span>
+                        </td>
+                        <td>{{ work.observations or '-' }}</td>
+                        <td>{{ work.worker_name }}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('edit_work', work_id=work.id) }}" class="btn btn-warning" style="padding: 0.25rem 0.6rem; font-size: 0.8rem;">Editar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="8" style="text-align: center; color: var(--text-muted);">No hay datos disponibles.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Usuarios - QASESORES{% endblock %}
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+    <h2>Gestión de Accesos Corporativos</h2>
+    <p style="color: var(--text-muted);">Control de supervisores y jefatura departamental</p>
+</div>
+
+<div class="card">
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Rol en el Sistema</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>#{{ u.id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td><span class="badge-role">{{ u.role }}</span></td>
+                    <td>
+                        {% if u.username != 'JefaturaGlobal' and u.id != current_user.id %}
+                        <form action="{{ url_for('delete_user', user_id=u.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" style="padding: 0.25rem 0.6rem; font-size: 0.8rem;" onclick="return confirm('¿Revocar acceso a este usuario?');">Revocar</button>
+                        </form>
+                        {% else %}
+                        <span style="color: var(--text-muted); font-size: 0.85rem;">(Protegido)</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
